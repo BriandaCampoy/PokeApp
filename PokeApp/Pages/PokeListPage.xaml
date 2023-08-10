@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:PokeApp.ViewModels"
+             xmlns:models="clr-namespace:PokeApp.Models"
+             x:Class="PokeApp.Pages.PokeListPage"
+             Title="Pokemon">
+    <ContentPage.BindingContext>
+        <viewModels:PokeListViewModel/>
+    </ContentPage.BindingContext>
+    <ScrollView>
+        <StackLayout>
+            <CollectionView ItemsSource="{Binding PokemonResults}"
+                        VerticalOptions="FillAndExpand"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedPokemon, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding SelectPokemonCommand}"
+                        ItemsUpdatingScrollMode="KeepItemsInView"
+                        RemainingItemsThreshold="1"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadMorePokemonCommad}">
+                <CollectionView.Header>
+                    <StackLayout>
+                        <ActivityIndicator IsRunning="True" 
+              IsVisible="{Binding IsBusy}" 
+              HeightRequest="40" 
+              WidthRequest="49" 
+              HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PokemonResult">
+                        <StackLayout>
+                            <Label Margin="20"
+                                   FontSize="Large" 
+                                   Text="{Binding Name}"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.Footer>
+                    <StackLayout>
+                        <ActivityIndicator IsRunning="True" 
+                          IsVisible="{Binding IsLoading}" 
+                          HeightRequest="40" 
+                          WidthRequest="49" 
+                          HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.Footer>
+            </CollectionView>
+        <Button Text="Load more pokemon"
+                Margin="20"
+                HorizontalOptions="Center"
+                Command="{Binding LoadMorePokemonCommad}"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>
