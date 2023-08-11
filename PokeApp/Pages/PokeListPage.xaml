@@ -4,13 +4,17 @@
              xmlns:viewModels="clr-namespace:PokeApp.ViewModels"
              xmlns:models="clr-namespace:PokeApp.Models"
              x:Class="PokeApp.Pages.PokeListPage"
+             Shell.BackgroundColor="#FF6961"
              Title="Pokemon">
+    <!-- Set the binding context to an instance of PokeListViewModel -->
     <ContentPage.BindingContext>
         <viewModels:PokeListViewModel/>
     </ContentPage.BindingContext>
-    <ScrollView>
-        <StackLayout>
-            <CollectionView ItemsSource="{Binding PokemonResults}"
+    <!-- Main content layout using a StackLayout -->
+    <StackLayout>
+        
+        <!-- CollectionView to display the list of Pokemon -->
+        <CollectionView ItemsSource="{Binding PokemonResults}"
                         VerticalOptions="FillAndExpand"
                         SelectionMode="Single"
                         SelectedItem="{Binding SelectedPokemon, Mode=TwoWay}"
@@ -18,38 +22,39 @@
                         ItemsUpdatingScrollMode="KeepItemsInView"
                         RemainingItemsThreshold="1"
                         RemainingItemsThresholdReachedCommand="{Binding LoadMorePokemonCommad}">
-                <CollectionView.Header>
-                    <StackLayout>
-                        <ActivityIndicator IsRunning="True" 
+
+            <!-- Header for the CollectionView, displays an activity indicator when busy -->
+            <CollectionView.Header>
+                <StackLayout>
+                    <ActivityIndicator IsRunning="True" 
               IsVisible="{Binding IsBusy}" 
               HeightRequest="40" 
               WidthRequest="49" 
               HorizontalOptions="Center"/>
-                    </StackLayout>
-                </CollectionView.Header>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="models:PokemonResult">
-                        <StackLayout>
-                            <Label Margin="20"
+                </StackLayout>
+            </CollectionView.Header>
+            
+            <!-- DataTemplate for each item in the CollectionView -->
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:PokemonResult">
+                    <StackLayout>
+                        <Label Margin="20"
                                    FontSize="Large" 
                                    Text="{Binding Name}"/>
-                        </StackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-                <CollectionView.Footer>
-                    <StackLayout>
-                        <ActivityIndicator IsRunning="True" 
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <!-- Footer for the CollectionView, displays an activity indicator when loading more data -->
+            <CollectionView.Footer>
+                <StackLayout>
+                    <ActivityIndicator IsRunning="True" 
                           IsVisible="{Binding IsLoading}" 
                           HeightRequest="40" 
                           WidthRequest="49" 
                           HorizontalOptions="Center"/>
-                    </StackLayout>
-                </CollectionView.Footer>
-            </CollectionView>
-        <Button Text="Load more pokemon"
-                Margin="20"
-                HorizontalOptions="Center"
-                Command="{Binding LoadMorePokemonCommad}"/>
-        </StackLayout>
-    </ScrollView>
+                </StackLayout>
+            </CollectionView.Footer>
+        </CollectionView>
+    </StackLayout>
 </ContentPage>

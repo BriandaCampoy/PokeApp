@@ -5,22 +5,31 @@
              xmlns:viewModels="clr-namespace:PokeApp.ViewModels"
              xmlns:models="clr-namespace:PokeApp.Models"
              x:DataType="viewModels:PokemonDetailViewModel"
-             Title="{Binding pokemonDetails.Name}">
-    <ScrollView>
+             Shell.BackgroundColor="#FF6961"
+             Title="{Binding PokemonDetail.Name}">
 
+    <!-- Main content layout using a ScrollView -->
+    <ScrollView>
         <VerticalStackLayout Margin="20">
-            <Image Source="{Binding pokemonDetails.Sprites.front_default}"/>
+            <!-- ActivityIndicator to display loading state -->
+            <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+
+            <!-- Display the front_default sprite image of the Pokemon -->
+            <Image Source="{Binding PokemonDetail.Sprites.front_default}"/>
+
+            <!-- Display the Species name of the Pokemon -->
             <HorizontalStackLayout>
                 <Label Text="Species: "
                    FontSize="Medium"
                    FontAttributes="Bold"/>
-                <Label Text="{Binding pokemonDetails.Species.Name}"
+                <Label Text="{Binding PokemonDetail.Species.Name}"
                        FontSize="Medium"
                        VerticalOptions="Center" 
                        HorizontalOptions="Center" />
             </HorizontalStackLayout>
 
-            <CollectionView ItemsSource="{Binding pokemonDetails.Types}">
+            <!-- CollectionView to display the Pokemon's types -->
+            <CollectionView ItemsSource="{Binding PokemonDetail.Types}">
                 <CollectionView.ItemsLayout>
                     <LinearItemsLayout Orientation="Vertical"/>
                 </CollectionView.ItemsLayout>
@@ -33,6 +42,8 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
+
+            <!-- Grid to display Pokemon details like Order, Base Experience, Height, and Weight -->
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*" />
@@ -42,32 +53,37 @@
                     <RowDefinition Height="1*"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
+                <!-- Display Pokemon's Order -->
                 <Frame  Grid.Column="0" Grid.Row="0" BorderColor="Black" Margin="10">
                     <StackLayout>
                         <Label  Text="Order: " />
-                        <Label  Text="{Binding pokemonDetails.Order}" HorizontalTextAlignment="Center" />
+                        <Label  Text="{Binding PokemonDetail.Order}" HorizontalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
+                <!-- Display Pokemon's Base Experience -->
                 <Frame Grid.Column="1" Grid.Row="0" BorderColor="Black" Margin="10">
                     <StackLayout>
                         <Label  Text="Base experience: " />
-                        <Label  Text="{Binding pokemonDetails.BaseExperience}" HorizontalTextAlignment="Center" />
+                        <Label  Text="{Binding PokemonDetail.BaseExperience}" HorizontalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
+                <!-- Display Pokemon's Height -->
                 <Frame Grid.Column="0" Grid.Row="1"  BorderColor="Black" Margin="10">
                     <StackLayout >
                         <Label  Text="Height: " />
-                        <Label  Text="{Binding pokemonDetails.Height}" HorizontalTextAlignment="Center" />
+                        <Label  Text="{Binding PokemonDetail.Height}" HorizontalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
+                <!-- Display Pokemon's Weight -->
                 <Frame  Grid.Column="1" Grid.Row="1" BorderColor="Black"  Margin="10">
                     <StackLayout>
                         <Label  Text="Weight: " />
-                        <Label  Text="{Binding pokemonDetails.Weight}" HorizontalTextAlignment="Center" />
+                        <Label  Text="{Binding PokemonDetail.Weight}" HorizontalTextAlignment="Center" />
                     </StackLayout>
                 </Frame>
             </Grid>
 
+            <!-- Display Pokemon's Stats -->
             <Label  HorizontalTextAlignment="Center"   
                 FontSize="Medium"
                 FontAttributes="Bold" 
@@ -82,7 +98,7 @@
                 <Label Grid.Column="1"  HorizontalTextAlignment="Center"  Text="Base Stat" FontAttributes="Bold" />
                 <Label Grid.Column="2"  HorizontalTextAlignment="Center"  Text="Effort" FontAttributes="Bold" />
             </Grid>
-            <CollectionView ItemsSource="{Binding pokemonDetails.Stats}">
+            <CollectionView ItemsSource="{Binding PokemonDetail.Stats}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:StatInfo">
                         <Grid Padding="10">
@@ -101,7 +117,7 @@
             </CollectionView>
 
 
-            <CarouselView ItemsSource="{Binding pokemonDetails.Sprites.Properties}">
+            <CarouselView ItemsSource="{Binding PokemonDetail.Sprites.Properties}">
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
                         <StackLayout>
@@ -127,7 +143,7 @@
                        Grid.Row="0" Text="Moves"   
                        FontSize="Medium"
                        FontAttributes="Bold"/>
-                <CollectionView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding pokemonDetails.Moves}">
+                <CollectionView Grid.Column="0" Grid.Row="1" ItemsSource="{Binding PokemonDetail.Moves}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:MoveInfo">
                             <Label Text="{Binding Move.Name}"/>
@@ -140,7 +156,7 @@
                        Text="Abilities"   
                        FontSize="Medium"
                        FontAttributes="Bold"/>
-                <CollectionView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding pokemonDetails.Abilities}">
+                <CollectionView Grid.Column="1" Grid.Row="1" ItemsSource="{Binding PokemonDetail.Abilities}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:AbilitySlot">
                             <Label Text="{Binding Ability.Name}"/>

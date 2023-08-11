@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace PokeApp.Models
 {
+    /// <summary>
+    /// Represents detailed information about a Pokemon.
+    /// </summary>
     public class PokemonDetails
     {
         public List<AbilitySlot> Abilities { get; set; }
@@ -40,7 +43,6 @@ namespace PokeApp.Models
         public string Name { get; set; }
         public string Url { get; set; }
     }
-
 
     public class MoveInfo
     {
@@ -79,6 +81,9 @@ namespace PokeApp.Models
         public string Url { get; set; }
     }
 
+    /// <summary>
+    /// Represents the sprites (images) for a Pokemon.
+    /// </summary>
     public class Sprites
     {
         public string back_default { get; set; }
@@ -89,6 +94,10 @@ namespace PokeApp.Models
         public string front_female { get; set; }
         public string front_shiny { get; set; }
         public string front_shiny_female { get; set; }
+
+        /// <summary>
+        /// Gets the collection of sprite properties that are not null or empty.
+        /// </summary>
         public IEnumerable<string> Properties
         {
             get
