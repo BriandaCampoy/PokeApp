@@ -8,6 +8,9 @@ using Newtonsoft.Json;
 
 namespace PokeApp.Services
 {
+    /// <summary>
+    /// Service responsible for fetching Pokémon data from a remote API.
+    /// </summary>
     public class PokemonService:IPokemonService
     {
         static HttpClient client;
@@ -24,15 +27,15 @@ namespace PokeApp.Services
             return client;
         }
 
+        /// <summary>
+        /// Retrieves a collection of Pokémon from the remote API.
+        /// </summary>
+        /// <returns>An IEnumerable of PokemonResult containing the fetched Pokémon data.</returns>
         public async Task<IEnumerable<PokemonResult>> getPokemon()
         {
             try
             {
-                HttpClient client = await GetClient();
-                var response = await client.GetAsync($"{url}/pokemon");
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
+                var content = await ApiRequest($"{url}/pokemon");
                 PokemonList pokeList = JsonConvert.DeserializeObject<PokemonList>(content);
                 next = pokeList.Next;
                 return pokeList.Results;
@@ -43,15 +46,15 @@ namespace PokeApp.Services
             }
         }
 
+        /// <summary>
+        /// Retrieves the next batch of Pokémon data from the remote API based on the 'next' URL.
+        /// </summary>
+        /// <returns>An IEnumerable of PokemonResult containing the fetched Pokémon data.</returns>
         public async Task<IEnumerable<PokemonResult>> getNextPokemon()
         {
             try
             {
-                HttpClient client = await GetClient();
-                var response = await client.GetAsync(next);
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
+                var content = await ApiRequest(next);
                 PokemonList pokeList = JsonConvert.DeserializeObject<PokemonList>(content);
                 next = pokeList.Next;
                 return pokeList.Results;
@@ -62,17 +65,31 @@ namespace PokeApp.Services
             }
         }
 
+        /// <summary>
+        /// Performs an asynchronous HTTP GET request to the specified URL and returns the response content as a string.
+        /// </summary>
+        /// <param name="urlRequest">The URL to send the GET request to.</param>
+        /// <returns>A string containing the response content from the specified URL.</returns>
+        private async Task<string> ApiRequest(string urlRequest)
+        {
+            HttpClient client = await GetClient();
+            var response = await client.GetAsync(urlRequest);
+            response.EnsureSuccessStatusCode();
+
+            return await response.Content.ReadAsStringAsync();
+        }
+
+        /// <summary>
+        /// Retrieves detailed information about a specific Pokémon using its URL.
+        /// </summary>
+        /// <param name="pokemonUrl">The URL of the Pokémon to retrieve.</param>
+        /// <returns>A PokemonDetails object containing the detailed Pokémon information.</returns>
         public async Task<PokemonDetails> getPokemonByUrl(string pokemonUrl)
         {
             try
             {
-                HttpClient client = await GetClient();
-                var response = await client.GetAsync(pokemonUrl);
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
+                var content = await ApiRequest(pokemonUrl);
                 return JsonConvert.DeserializeObject<PokemonDetails>(content);
-                
             }
             catch (Exception ex)
             {
@@ -83,6 +100,9 @@ namespace PokeApp.Services
         
     }
 
+    /// <summary>
+    /// Interface defining methods to retrieve Pokémon data from a remote API.
+    /// </summary>
     public interface IPokemonService
     {
         Task<IEnumerable<PokemonResult>> getPokemon();

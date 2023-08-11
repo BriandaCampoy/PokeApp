@@ -12,6 +12,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace PokeApp.ViewModels
 {
+    /// <summary>
+    /// ViewModel for displaying a list of Pokémon and handling user interactions.
+    /// </summary>
     public partial class PokeListViewModel : ObservableObject
     {
         public ICommand SelectPokemonCommand { get; private set; }
@@ -19,20 +22,34 @@ namespace PokeApp.ViewModels
 
         public IPokemonService pokemonService = DependencyService.Resolve<IPokemonService>();
 
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the ViewModel is currently busy.
+        /// </summary>
         [ObservableProperty]
         private bool _isBusy;
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the ViewModel is currently loading data.
+        /// </summary>
         [ObservableProperty]
         private bool _isLoading;
 
+        /// <summary>
+        /// Gets or sets the collection of Pokémon results to display.
+        /// </summary>
         [ObservableProperty]
         private ObservableCollection<PokemonResult> _pokemonResults;
 
-
+        /// <summary>
+        /// Gets or sets the currently selected Pokémon.
+        /// </summary>
         [ObservableProperty]
         private PokemonResult _selectedPokemon;
 
-
+        /// <summary>
+        /// Initializes a new instance of the PokeListViewModel class.
+        /// </summary>
         public PokeListViewModel()
         {
             SelectPokemonCommand = new Command(async () => await PokemonSelected());
@@ -43,6 +60,9 @@ namespace PokeApp.ViewModels
             LoadPokemon();
         }
 
+        /// <summary>
+        /// Loads a collection of Pokémon data from the PokemonService and populates the PokemonResults collection.
+        /// </summary>
         private async Task PokemonSelected()
         {
             if (SelectedPokemon == null)
@@ -58,6 +78,10 @@ namespace PokeApp.ViewModels
             MainThread.BeginInvokeOnMainThread(() => SelectedPokemon = null);
         }
 
+
+        /// <summary>
+        /// Loads more Pokémon data when the "Load More" action is triggered.
+        /// </summary>
         private void LoadPokemon()
         {
            PokemonResults.Clear();
